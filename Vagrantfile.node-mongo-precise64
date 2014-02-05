@@ -1,0 +1,31 @@
+Vagrant::Config.run do |config|
+  config.vm.box = "precise64"
+  #config.vm.box = "node-mongo-precise64"
+  
+  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+  #config.vm.box_url = "https://dl.dropboxusercontent.com/u/168570/vagrant-boxes/node-mongo-precise64.box"
+
+  config.vm.forward_port 3000, 3000
+
+# install nodejs, grunt, express, ruby
+  config.vm.provision :shell, :inline => "sudo apt-get update"
+  config.vm.provision :shell, :inline => "sudo apt-get install -y build-essential --no-install-recommends"
+  config.vm.provision :shell, :inline => "sudo apt-get install -y redis-server --no-install-recommends"
+  config.vm.provision :shell, :inline => "sudo apt-get install -y ruby1.9.1-dev --no-install-recommends"
+  config.vm.provision :shell, :inline => "sudo apt-get install -y ruby1.9.3 --no-install-recommends"
+  config.vm.provision :shell, :inline => "sudo gem install cf"
+  config.vm.provision :shell, :inline => "sudo apt-get install -y python-software-properties python g++ make"
+  config.vm.provision :shell, :inline => "sudo apt-get install -y software-properties-common"
+  config.vm.provision :shell, :inline => "sudo add-apt-repository ppa:chris-lea/node.js"
+  config.vm.provision :shell, :inline => "sudo apt-get update"
+  config.vm.provision :shell, :inline => "sudo apt-get install -y nodejs"
+  config.vm.provision :shell, :inline => "npm install -g express --no-bin-links"
+  config.vm.provision :shell, :inline => "npm install -g grunt-cli"
+
+
+# install mongodb
+  config.vm.provision :shell, :inline => "sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10"
+  config.vm.provision :shell, :inline => "echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list"
+  config.vm.provision :shell, :inline => "sudo apt-get update"
+  config.vm.provision :shell, :inline => "sudo apt-get install mongodb-10gen"
+end
